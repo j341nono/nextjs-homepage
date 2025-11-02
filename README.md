@@ -20,65 +20,64 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ### Next.js の Link と passHref の使い分け
 
-1. Badge の中身が `<a>` タグの場合
-
-passHref は不要
-
-```tsx
-<Link href="/pickup">
-  <a>PICKUP</a>
-</Link>
-```
-
-**理由:** Next.js は `<a>` タグを特別扱いしており，自動的に `href` を渡すため
-
-2. Badge の中身がカスタムコンポーネントの場合
-
-- 一般的なケース：passHref が必要
-
-  Next.js では `<a>` タグを直接使うことは稀で，カスタムコンポーネントが大半．
+- 1. Badge の中身が `<a>` タグの場合
+     passHref は不要
 
   ```tsx
-  <Link href="/pickup" passHref>
-    <Badge>PICKUP</Badge>
+  <Link href="/pickup">
+    <a>PICKUP</a>
   </Link>
   ```
 
-  **理由:** `<a>` 以外のタグには props 経由で Link を渡す必要があるため
+  **理由:** Next.js は `<a>` タグを特別扱いしており，自動的に `href` を渡すため
 
-- asChild パターン対応コンポーネントの場合
+- 2. Badge の中身がカスタムコンポーネントの場合
 
-  コンポーネントが `asChild` パターンや ref forwarding に対応している場合は、上記の方法で問題ありません。
+  - 一般的なケース：passHref が必要
 
-- 自作コンポーネントの場合：コンポーネント内で Link を扱う
+    Next.js では `<a>` タグを直接使うことは稀で，カスタムコンポーネントが大半．
 
-  自作コンポーネントでは、**コンポーネント内部で Link を扱う**設計が推奨．
+    ```tsx
+    <Link href="/pickup" passHref>
+      <Badge>PICKUP</Badge>
+    </Link>
+    ```
 
-  ```tsx
-  // MyBadge.tsx
-  import Link from "next/link";
+    **理由:** `<a>` 以外のタグには props 経由で Link を渡す必要があるため
 
-  type MyBadgeProps = {
-    href: string;
-    children: React.ReactNode;
-  };
+  - asChild パターン対応コンポーネントの場合
 
-  export default function MyBadge({ href, children }: MyBadgeProps) {
-    return (
-      <Link href={href} passHref>
-        <span className="inline-block bg-red-500 text-white rounded-full px-2 py-1 text-xs font-bold hover:bg-red-600 transition">
-          {children}
-        </span>
-      </Link>
-    );
-  }
-  ```
+    コンポーネントが `asChild` パターンや ref forwarding に対応している場合は、上記の方法で問題ありません。
 
-  呼び出し側
+  - 自作コンポーネントの場合：コンポーネント内で Link を扱う
 
-  ```tsx
-  <MyBadge href="/pickup">PICKUP</MyBadge>
-  ```
+    自作コンポーネントでは、**コンポーネント内部で Link を扱う**設計が推奨．
+
+    ```tsx
+    // MyBadge.tsx
+    import Link from "next/link";
+
+    type MyBadgeProps = {
+      href: string;
+      children: React.ReactNode;
+    };
+
+    export default function MyBadge({ href, children }: MyBadgeProps) {
+      return (
+        <Link href={href} passHref>
+          <span className="inline-block bg-red-500 text-white rounded-full px-2 py-1 text-xs font-bold hover:bg-red-600 transition">
+            {children}
+          </span>
+        </Link>
+      );
+    }
+    ```
+
+    呼び出し側
+
+    ```tsx
+    <MyBadge href="/pickup">PICKUP</MyBadge>
+    ```
 
 ## Getting Started
 
