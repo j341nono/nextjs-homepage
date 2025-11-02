@@ -18,11 +18,11 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 - Shadcn[https://ui.shadcn.com/docs/components/badge] の Badge を元に作成した．
 - Tailwindcss のプロパティが非常に優秀な設計になっている．
 
-Next.js の Link と passHref の使い分け
+### Next.js の Link と passHref の使い分け
 
-### Badge の中身が `<a>` タグの場合
+1. Badge の中身が `<a>` タグの場合
 
-### passHref は不要
+passHref は不要
 
 ```tsx
 <Link href="/pickup">
@@ -30,75 +30,55 @@ Next.js の Link と passHref の使い分け
 </Link>
 ```
 
-**理由:** Next.js は `<a>` タグを特別扱いしており、自動的に `href` を渡すため
+**理由:** Next.js は `<a>` タグを特別扱いしており，自動的に `href` を渡すため
 
----
+2. Badge の中身がカスタムコンポーネントの場合
 
-### Badge の中身がカスタムコンポーネントの場合
+- 一般的なケース：passHref が必要
 
-### 一般的なケース：passHref が必要
+  Next.js では `<a>` タグを直接使うことは稀で，カスタムコンポーネントが大半．
 
-Next.js では `<a>` タグを直接使うことは稀で、カスタムコンポーネントが大半です。
+  ```tsx
+  <Link href="/pickup" passHref>
+    <Badge>PICKUP</Badge>
+  </Link>
+  ```
 
-```tsx
-<Link href="/pickup" passHref>
-  <Badge>PICKUP</Badge>
-</Link>
-```
+  **理由:** `<a>` 以外のタグには props 経由で Link を渡す必要があるため
 
-**理由:** `<a>` 以外のタグには props 経由で Link を渡す必要があるため
+- asChild パターン対応コンポーネントの場合
 
----
+  コンポーネントが `asChild` パターンや ref forwarding に対応している場合は、上記の方法で問題ありません。
 
-### asChild パターン対応コンポーネントの場合
+- 自作コンポーネントの場合：コンポーネント内で Link を扱う
 
-コンポーネントが `asChild` パターンや ref forwarding に対応している場合は、上記の方法で問題ありません。
+  自作コンポーネントでは、**コンポーネント内部で Link を扱う**設計が推奨．
 
----
+  ```tsx
+  // MyBadge.tsx
+  import Link from "next/link";
 
-### 自作コンポーネントの場合：コンポーネント内で Link を扱う
+  type MyBadgeProps = {
+    href: string;
+    children: React.ReactNode;
+  };
 
-- 推奨パターン
+  export default function MyBadge({ href, children }: MyBadgeProps) {
+    return (
+      <Link href={href} passHref>
+        <span className="inline-block bg-red-500 text-white rounded-full px-2 py-1 text-xs font-bold hover:bg-red-600 transition">
+          {children}
+        </span>
+      </Link>
+    );
+  }
+  ```
 
-自作コンポーネントでは、**コンポーネント内部で Link を扱う**設計が推奨されます。
+  呼び出し側
 
-```tsx
-// MyBadge.tsx
-import Link from "next/link";
-
-type MyBadgeProps = {
-  href: string;
-  children: React.ReactNode;
-};
-
-export default function MyBadge({ href, children }: MyBadgeProps) {
-  return (
-    <Link href={href} passHref>
-      <span className="inline-block bg-red-500 text-white rounded-full px-2 py-1 text-xs font-bold hover:bg-red-600 transition">
-        {children}
-      </span>
-    </Link>
-  );
-}
-```
-
-- 呼び出し側
-
-```tsx
-<MyBadge href="/pickup">PICKUP</MyBadge>
-```
-
----
-
-### まとめ
-
-| ケース                                 | passHref               | 実装方法                          |
-| -------------------------------------- | ---------------------- | --------------------------------- |
-| `<a>` タグを直接使用                   | 不要                   | `<Link><a>text</a></Link>`        |
-| カスタムコンポーネント（asChild 対応） | 必要                   | `<Link passHref><Badge /></Link>` |
-| 自作コンポーネント                     | コンポーネント内で実装 | コンポーネント内部で Link を使用  |
-
----
+  ```tsx
+  <MyBadge href="/pickup">PICKUP</MyBadge>
+  ```
 
 ## Getting Started
 
