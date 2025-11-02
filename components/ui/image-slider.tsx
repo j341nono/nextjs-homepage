@@ -26,7 +26,7 @@ const ImageSlider = () => {
         {images.map((img, i) => (
           <SwiperSlide key={i}>
             <div className="relative w-full h-96">
-              <Image src={img.src} alt={img.alt} fill className="object-cover rounded-2xl" />
+              <Image src={img.src} alt={img.alt} fill className="object-cover" />
             </div>
           </SwiperSlide>
         ))}

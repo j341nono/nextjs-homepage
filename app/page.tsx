@@ -1,5 +1,6 @@
 // import Image from "next/image";
 
+import PickupSection from "@/components/sections/PickupSection";
 import ImageSlider from "@/components/ui/image-slider";
 
 export default function Home() {
@@ -13,10 +14,10 @@ export default function Home() {
     //   </main>
     //   </div>
     <>
-      <div className="mt-20 ml-10" >
-      Sample HomePage
-      </div>
+      <div className="mt-10" >
       <ImageSlider />
+      </div>
+      <PickupSection />
     </>
   );
 }
