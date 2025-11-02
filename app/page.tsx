@@ -1,5 +1,7 @@
 // import Image from "next/image";
 
+import ImageSlider from "@/components/ui/image-slider";
+
 export default function Home() {
   return (
     //   <div className= "flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black" >
@@ -10,8 +12,11 @@ export default function Home() {
 
     //   </main>
     //   </div>
-    <div className="mt-20 ml-10" >
-      Home
-    </div>
+    <>
+      <div className="mt-20 ml-10" >
+      Sample HomePage
+      </div>
+      <ImageSlider />
+    </>
   );
 }
