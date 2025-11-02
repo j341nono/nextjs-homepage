@@ -1,5 +1,15 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+
+## 技術解説
+### Header
+- MUI の [App bar](https://mui.com/material-ui/react-app-bar/?utm_source=chatgpt.com) を元に作成した．
+- ハンバーガーメニュー内のホバーの設定．（ホバー時の文字と背景色）
+- Link の使用
+    - rucide-react の Link と間違えないように
+
+
+
 ## Getting Started
 
 First, run the development server:
